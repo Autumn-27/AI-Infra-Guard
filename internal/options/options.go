@@ -48,6 +48,7 @@ func ParseOptions() *Options {
 	flag.Var(&options.Target, "target", "目标,可以指定多个目标 eg:-target xx.com -target aa.com")
 	flag.StringVar(&options.TargetFile, "file", "", "指定目标文件")
 	flag.StringVar(&options.Output, "o", "", "输出的文件")
+	flag.BoolVar(&options.JSON, "json", false, "输出JSON")
 	flag.IntVar(&options.TimeOut, "timeout", 5, "超时时间(s)")
 	flag.StringVar(&options.ProxyURL, "proxy-url", "", "代理url")
 	flag.IntVar(&options.RateLimit, "limit", 200, "限制每秒的并发数量")

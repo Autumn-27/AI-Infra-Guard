@@ -480,7 +480,9 @@ func (r *Runner) createOutputFile() (*os.File, error) {
 func (r *Runner) writeResult(f *os.File, result HttpResult) {
 	fmt.Println(result.s)
 	if f != nil {
-		_, _ = f.WriteString(result.s + "\n")
+		if !r.Options.JSON {
+			_, _ = f.WriteString(result.s + "\n")
+		}
 	}
 	if len(result.Advisories) > 0 {
 		fmt.Println("\n存在漏洞:")
@@ -504,7 +506,12 @@ func (r *Runner) writeResult(f *os.File, result HttpResult) {
 				builderFile.WriteString("修复建议: " + item.Info.SecurityAdvise + "\n")
 			}
 			fmt.Println(builder.String())
-			_, _ = f.WriteString(builderFile.String() + "\n")
+			if !r.Options.JSON {
+				_, _ = f.WriteString(builderFile.String() + "\n")
+			}
+		}
+		if r.Options.JSON {
+			_, _ = f.WriteString(result.JSON() + "\n")
 		}
 		if r.Options.AIAnalysis {
 			fmt.Println("AI分析:")
@@ -518,7 +525,9 @@ func (r *Runner) writeResult(f *os.File, result HttpResult) {
 			if err != nil {
 				gologger.WithError(err).Errorln("AI分析失败")
 			}
-			_, _ = f.WriteString(full + "\n")
+			if !r.Options.JSON {
+				_, _ = f.WriteString(full + "\n")
+			}
 		}
 	}
 }
